@@ -48,14 +48,17 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3000/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          registrationNumber: form.registrationNumber,
-          password: form.password,
-        }),
-      });
+      const response = await fetch(
+        "https://aib-login-server.onrender.com/api/login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            registrationNumber: form.registrationNumber,
+            password: form.password,
+          }),
+        }
+      );
 
       const data = await response.json();
 
