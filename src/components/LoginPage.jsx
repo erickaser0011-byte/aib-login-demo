@@ -24,7 +24,6 @@ function validate({ registrationNumber, password }) {
 export default function LoginPage() {
   const [form, setForm] = useState({ registrationNumber: "", password: "" });
   const [errors, setErrors] = useState({});
-  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -65,7 +64,7 @@ export default function LoginPage() {
       if (response.ok && data.success) {
         setShowModal(true);
       } else {
-        alert("Failed to clock in. Please try again.");
+        alert("Failed to log in. Please try again.");
       }
     } catch (err) {
       console.error("Network error:", err);
@@ -76,31 +75,29 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen w-full bg-[#282427] sm:bg-black flex flex-col items-center justify-center p-0 sm:p-6 text-slate-100">
-      {/* 
-        Container adjustments:
-        - Mobile: p-4 px-3 (tight horizontal spacing so fields stretch almost edge-to-edge)
-        - Desktop (sm:): increased vertical padding (sm:py-16) to make the card height taller, and side-by-side buttons 
-      */}
-      <div className="w-full sm:max-w-md bg-[#282427] sm:rounded-xl p-4 sm:px-8 sm:py-16 sm:shadow-2xl flex flex-col justify-between min-h-screen sm:min-h-0">
+    <main className="min-h-screen w-full bg-white dark:bg-[#282427] sm:bg-gray-100 sm:dark:bg-[#18181b] flex flex-col items-center justify-center p-0 sm:p-6 text-gray-900 dark:text-slate-100 transition-colors duration-300">
+      {/* 480px wide container with reduced vertical padding (py-8 instead of py-10) to shorten height */}
+      <div className="w-full sm:max-w-[480px] bg-white dark:bg-[#282427] sm:rounded-xl p-6 sm:px-10 sm:py-12 flex flex-col justify-center min-h-screen sm:min-h-max transition-colors duration-300 shadow-xl">
         <div className="w-full">
-          {/* Logo untouched */}
-          <div className="flex flex-col items-center text-center mb-6 pt-6 sm:pt-0">
+          {/* Logo significantly increased in size (h-28 w-28) and spacing tightened */}
+          <div className="flex flex-col items-center text-center mb-7 mt-2 sm:mt-0">
             <img
-              src="/Aib_logo.jpeg"
+              src="/Aib-logo.png"
               alt="AIB Logo"
-              className="h-20 w-20 object-cover mb-5"
+              className="h-20 w-20 sm:h-18 sm:w-18 object-contain mb-3"
             />
-            <h1 className="text-3xl font-semibold tracking-tight text-white">
+            <h1 className="text-[26px] font-bold tracking-wide text-gray-900 dark:text-white">
               Log in
             </h1>
           </div>
 
-          <form onSubmit={handleSubmit} noValidate className="space-y-4">
+          {/* Form spacing tightened from space-y-6 to space-y-5 */}
+          <form onSubmit={handleSubmit} noValidate className="space-y-6">
+            {/* Registration Number */}
             <div>
               <label
                 htmlFor="registrationNumber"
-                className="block text-sm font-normal text-slate-300 mb-1.5"
+                className="block text-[13px] font-medium text-gray-700 dark:text-[#a1a1aa] mb-1.5"
               >
                 Registration number*
               </label>
@@ -112,92 +109,85 @@ export default function LoginPage() {
                 value={form.registrationNumber}
                 onChange={handleChange}
                 disabled={loading}
-                className={`w-full rounded-lg border bg-[#2b2a2e] px-3.5 py-3 text-white placeholder-slate-500 shadow-inner outline-none transition
-                focus:ring-2 focus:ring-[#02856A]/40 focus:border-[#02856A] disabled:opacity-50
+                className={`w-full rounded-md border bg-transparent px-4 py-3 text-gray-900 dark:text-white placeholder-transparent outline-none transition-colors
+                focus:border-[#02856A] focus:ring-1 focus:ring-[#02856A] disabled:opacity-50
                 ${
                   errors.registrationNumber
-                    ? "border-red-400 focus:border-red-500"
-                    : "border-slate-700/60"
+                    ? "border-red-500"
+                    : "border-gray-300 dark:border-[#525252]"
                 }`}
               />
               {errors.registrationNumber && (
-                <p className="mt-1.5 text-sm text-red-400">
+                <p className="mt-1.5 text-xs text-red-500 dark:text-red-400">
                   {errors.registrationNumber}
                 </p>
               )}
             </div>
 
+            {/* PAC Input */}
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-normal text-slate-300 mb-1.5"
+                className="block text-[13px] font-medium text-gray-700 dark:text-[#a1a1aa] mb-1.5"
               >
                 5-digit Personal Access Code (PAC)*
               </label>
-              <div className="relative">
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  autoComplete="current-password"
-                  value={form.password}
-                  onChange={handleChange}
-                  disabled={loading}
-                  className={`w-full rounded-lg border bg-[#2b2a2e] px-3.5 py-3 pr-12 text-white placeholder-slate-500 shadow-inner outline-none transition
-                  focus:ring-2 focus:ring-[#02856A]/40 focus:border-[#02856A] disabled:opacity-50
-                  ${
-                    errors.password
-                      ? "border-red-400 focus:border-red-500"
-                      : "border-slate-700/60"
-                  }`}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((s) => !s)}
-                  disabled={loading}
-                  className="absolute inset-y-0 right-0 px-3.5 flex items-center text-slate-400 hover:text-slate-200 disabled:opacity-50 text-sm"
-                >
-                  {showPassword ? "Hide" : "Show"}
-                </button>
-              </div>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                value={form.password}
+                onChange={handleChange}
+                disabled={loading}
+                className={`w-full rounded-md border bg-transparent px-4 py-3 text-gray-900 dark:text-white placeholder-transparent outline-none transition-colors
+                focus:border-[#02856A] focus:ring-1 focus:ring-[#02856A] disabled:opacity-50
+                ${
+                  errors.password
+                    ? "border-red-500"
+                    : "border-gray-300 dark:border-[#525252]"
+                }`}
+              />
               {errors.password && (
-                <p className="mt-1.5 text-sm text-red-400">{errors.password}</p>
+                <p className="mt-1.5 text-xs text-red-500 dark:text-red-400">
+                  {errors.password}
+                </p>
               )}
             </div>
 
-            {/* Buttons: Stacked on mobile (Login top, Cancel bottom), side-by-side on desktop */}
-            <div className="space-y-3 sm:space-y-0 sm:flex sm:flex-row-reverse sm:gap-3 pt-2">
+            {/* Buttons: Spaced with gap-5 and py-3 for exact screenshot proportions */}
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:gap-5 pt-1">
+              <button
+                type="button"
+                onClick={(e) => e.preventDefault()}
+                className="order-2 sm:order-1 w-full sm:w-1/2 rounded-md bg-gray-100 dark:bg-[#454245] px-4 py-3 text-[15px] font-semibold text-gray-700 dark:text-slate-200 hover:bg-gray-200 dark:hover:bg-[#535053] transition-colors"
+              >
+                Cancel
+              </button>
+
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full sm:w-1/2 inline-flex items-center justify-center gap-2 rounded-lg bg-[#02856A] px-4 py-3 text-base font-semibold text-white shadow-sm
-                hover:bg-[#027056] focus:outline-none focus:ring-2 focus:ring-[#02856A] focus:ring-offset-2 focus:ring-offset-[#282427]
-                disabled:cursor-not-allowed disabled:opacity-70 transition"
+                className="order-1 sm:order-2 w-full sm:w-1/2 inline-flex items-center justify-center gap-2 rounded-md bg-[#05896a] px-4 py-3 text-[15px] font-semibold text-white
+                hover:bg-[#047157] focus:outline-none disabled:opacity-70 transition-colors"
               >
                 {loading ? (
                   <>
-                    <Spinner className="h-5 w-5" />
+                    <Spinner className="h-4 w-4" />
                     Logging in…
                   </>
                 ) : (
                   "Log in"
                 )}
               </button>
-
-              <button
-                type="button"
-                onClick={(e) => e.preventDefault()}
-                className="w-full sm:w-1/2 rounded-lg bg-[#3a393e] px-4 py-3 text-base font-semibold text-slate-200 shadow-sm hover:bg-[#45444a] transition"
-              >
-                Cancel
-              </button>
             </div>
           </form>
 
-          <div className="mt-8 text-center">
+          {/* Links: Exact typography with bold weight and tight underline offset */}
+          <div className="mt-12 text-center">
             <button
               type="button"
-              className="text-sm font-medium text-[#f472b6] hover:underline underline"
+              className="text-[14px] font-bold text-[#7C2B83] dark:text-[#d875d3] hover:opacity-80 underline decoration-1 underline-offset-[3px]"
               onClick={(e) => e.preventDefault()}
             >
               Trouble logging in?
@@ -205,26 +195,29 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="mt-8 pb-6 sm:pb-0 text-center text-xs text-slate-400 space-x-2">
+        {/* Footer: Tightened spacing and matching underline styles */}
+        <div className="mt-8 mb-2 sm:mb-0 flex justify-center items-center gap-4 text-[13px] font-bold text-gray-500 dark:text-gray-300">
           <a
             href="#terms"
             onClick={(e) => e.preventDefault()}
-            className="underline hover:text-slate-200"
+            className="underline decoration-1 underline-offset-[3px] hover:text-gray-800 dark:hover:text-white"
           >
             Terms
           </a>
-          <span>|</span>
+          <span className="font-normal text-gray-400 dark:text-gray-500">
+            |
+          </span>
           <a
             href="#help"
             onClick={(e) => e.preventDefault()}
-            className="underline hover:text-slate-200"
+            className="underline decoration-1 underline-offset-[3px] hover:text-gray-800 dark:hover:text-white"
           >
             Help
           </a>
         </div>
       </div>
 
-      <Modal open={showModal} />
+      <Modal open={showModal} onClose={() => setShowModal(false)} />
     </main>
   );
 }

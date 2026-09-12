@@ -16,29 +16,29 @@ export default function Modal({ open }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 transition-colors duration-300"
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
     >
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-sm animate-[fadeIn_150ms_ease-out]" />
+      {/* Backdrop: Lighter shadow in light mode, darker in dark mode */}
+      <div className="absolute inset-0 bg-black/40 dark:bg-black/80 backdrop-blur-sm animate-[fadeIn_150ms_ease-out]" />
 
-      {/* Card matching the reference design */}
-      <div className="relative w-full max-w-sm rounded-2xl bg-[#282427] p-8 shadow-2xl ring-1 ring-slate-700/80 animate-[popIn_180ms_ease-out] flex flex-col items-center text-center">
-        {/* Logo at the top */}
-        <div className="mb-6">
+      {/* Card: Tighter max-width to match the compact square-like proportion of the image */}
+      <div className="relative w-full max-w-[320px] rounded-2xl bg-white dark:bg-[#262426] p-10 shadow-2xl animate-[popIn_180ms_ease-out] flex flex-col items-center text-center transition-colors duration-300">
+        {/* Logo */}
+        <div className="mb-8">
           <img
-            src="/Aib_logo.jpeg"
+            src="/Aib-logo.png"
             alt="AIB Logo"
-            className="h-16 w-16 object-cover shadow-sm"
+            className="h-14 w-14 object-contain"
           />
         </div>
 
-        {/* Big White Loading Ring */}
-        <div className="my-4">
+        {/* Spinner: Adjusted strokeWidth to 2 for the thin look in the reference image */}
+        <div className="mb-6">
           <svg
-            className="animate-spin h-12 w-12 text-white"
+            className="animate-spin h-10 w-10 text-gray-800 dark:text-white"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -49,7 +49,7 @@ export default function Modal({ open }) {
               cy="12"
               r="10"
               stroke="currentColor"
-              strokeWidth="3"
+              strokeWidth="2"
             ></circle>
             <path
               className="opacity-75"
@@ -62,15 +62,18 @@ export default function Modal({ open }) {
         {/* Authentication Status Text */}
         <h2
           id="modal-title"
-          className="mt-2 text-base font-medium text-white tracking-wide"
+          className="text-[14px] font-medium text-gray-900 dark:text-white tracking-wide"
         >
           Authenticating your phone
         </h2>
 
-        <p className="mt-3 text-xs text-slate-400">
+        {/* Device specific subtext */}
+        <p className="mt-4 text-[12px] text-gray-500 dark:text-[#a1a1aa] leading-snug">
           Request sent to:
           <br />
-          <span className="text-slate-300 font-medium">Your Device</span>
+          <span className="text-gray-800 dark:text-[#e4e4e7] font-medium">
+            Your Device
+          </span>
         </p>
       </div>
     </div>
